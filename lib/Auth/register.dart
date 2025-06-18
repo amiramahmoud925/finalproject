@@ -194,8 +194,17 @@ class _RegisterState extends State<Register> {
                   prefixIcon: Icon(Icons.email),
                 ),
                 keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                    return 'Enter a valid email';
+                  }
+                  return null;
+                },
               ),
-              SizedBox(height: 10,),
+              SizedBox(height: 10),
               TextFormField(
                 controller: _phoneController,
                 decoration: InputDecoration(
@@ -204,8 +213,17 @@ class _RegisterState extends State<Register> {
                   prefixIcon: Icon(Icons.phone),
                 ),
                 keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your phone number';
+                  }
+                  if (!RegExp(r'^\d{10,}$').hasMatch(value)) {
+                    return 'Enter a valid phone number';
+                  }
+                  return null;
+                },
               ),
-              SizedBox(height: 10,),
+              SizedBox(height: 10),
               TextFormField(
                 controller: _passwordController,
                 decoration: InputDecoration(
@@ -214,6 +232,15 @@ class _RegisterState extends State<Register> {
                   prefixIcon: Icon(Icons.lock),
                 ),
                 obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  if (value.length < 6) {
+                    return 'Password must be at least 6 characters';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 10,),
               TextFormField(
@@ -225,11 +252,13 @@ class _RegisterState extends State<Register> {
                 ),
                 obscureText: true,
                 validator: (val) {
+                  if (val == null || val.isEmpty) return 'Please confirm your password';
                   if (val != _passwordController.text) return 'Passwords do not match';
                   return null;
                 },
               ),
-              SizedBox(height: 10,),
+              SizedBox(height: 10),
+
               TextFormField(
                 controller: _addressController,
                 decoration: InputDecoration(
@@ -238,8 +267,13 @@ class _RegisterState extends State<Register> {
                   prefixIcon: Icon(Icons.place),
                 ),
                 maxLines: 2,
+                validator: (val) {
+                  if (val == null || val.isEmpty) return 'Please enter your address';
+                  return null;
+                },
               ),
-              SizedBox(height: 10,),
+              SizedBox(height: 10),
+
               GestureDetector(
                 onTap: _pickDate,
                 child: AbsorbPointer(
@@ -247,9 +281,13 @@ class _RegisterState extends State<Register> {
                     controller: _birthController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: "Birth of Date",
+                      labelText: "Date of Birth",
                       prefixIcon: Icon(Icons.cake),
                     ),
+                    validator: (val) {
+                      if (val == null || val.isEmpty) return 'Please select your birth date';
+                      return null;
+                    },
                   ),
                 ),
               ),
