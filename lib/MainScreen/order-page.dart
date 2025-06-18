@@ -19,14 +19,12 @@ class _OrderPageState extends State<OrderPage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFFFCE8D2),
         title: const Text("Orders"),
+        titleTextStyle: TextStyle(color: Colors.brown[800],
+          fontSize: 22, fontWeight: FontWeight.bold,
+        ),
         centerTitle: true,
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.brown[800]),
-        titleTextStyle: TextStyle(
-          color: Colors.brown[800],
-          fontSize: 22,
-          fontWeight: FontWeight.bold,
-        ),
       ),
       body: orders.isEmpty
           ? const Center(
@@ -49,7 +47,7 @@ class _OrderPageState extends State<OrderPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Order Date: ${order.date.toLocal().toString().split(' ')[0]}',
+                        'Order Date : ${order.date.toLocal().toString().split(' ')[0]}',
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
@@ -62,7 +60,7 @@ class _OrderPageState extends State<OrderPage> {
                       }).toList(),
                       const SizedBox(height: 10),
                       Text(
-                        'Total: \$${order.totalPrice.toStringAsFixed(2)}',
+                        'Total : \$${order.totalPrice.toStringAsFixed(2)}',
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),

@@ -84,9 +84,8 @@ class _CartPageState extends State<CartPage> {
                 int quantity = entry.value;
                 return ListTile(
                   leading: Image.asset(book.image,
-                      width: 60, height: 60, fit: BoxFit.cover),
-                  title: Text(book.title,
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                      width: 55, height: 75, fit: BoxFit.cover),
+                  title: Text(book.title, style: TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text('\$${book.price.toStringAsFixed(2)}'),
                   trailing: SizedBox(
                     width: 155,
@@ -116,7 +115,7 @@ class _CartPageState extends State<CartPage> {
           Container(
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.brown.shade100,
+              color: Colors.brown,
               boxShadow: [
                 BoxShadow(color: Colors.black26, blurRadius: 6, offset: Offset(0, -2))
               ],
@@ -125,21 +124,18 @@ class _CartPageState extends State<CartPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Total: \$${CartManager.totalPrice.toStringAsFixed(2)}",
+                  "Total : \$${CartManager.totalPrice.toStringAsFixed(2)}",
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.brown[900]),
+                      color: Colors.white),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     if (CartManager.cartItems.isNotEmpty) {
                       OrderManager.placeOrder([Map.from(CartManager.cartItems)]);
-
                       CartManager.clearCart();
-
-                      Navigator.pushReplacement(
-                        context,
+                      Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => const OrderPage()),
                       );
                     }

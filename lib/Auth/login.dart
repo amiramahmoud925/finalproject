@@ -47,7 +47,6 @@ class _LoginState extends State<Login> {
     String? storedPassword = prefs.getString('password');
     String? storedName = prefs.getString('firstName');
 
-    // Debug prints (optional - helpful during testing)
     print('Entered email: $email');
     print('Stored email: $storedEmail');
     print('Entered password: $password');

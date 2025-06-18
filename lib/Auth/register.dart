@@ -19,8 +19,8 @@ class _RegisterState extends State<Register> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _passController = TextEditingController();
-  final TextEditingController _confirmpassController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmpasswordController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _birthController = TextEditingController();
 
@@ -89,14 +89,13 @@ class _RegisterState extends State<Register> {
       "phone": _phoneController.text.trim(),
       "address": _addressController.text.trim(),
       "email": _emailController.text.trim(),
-      "password": _passController.text,
+      "password": _passwordController.text,
       "gender": selectedGender,
       "birth_date": selectedDate!.toIso8601String(),
     };
 
     try {
-      final response = await http.post(
-        url,
+      final response = await http.post( url,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(data),
       );
@@ -118,7 +117,7 @@ class _RegisterState extends State<Register> {
         await prefs.setString('address', _addressController.text.trim());
         await prefs.setString('gender', selectedGender!);
         await prefs.setString('birthDate', selectedDate!.toIso8601String());
-        await prefs.setString('password', _passController.text);
+        await prefs.setString('password', _passwordController.text);
         if (_avatar != null) {
           await prefs.setString('avatarPath', _avatar!.path);
         }
@@ -173,30 +172,88 @@ class _RegisterState extends State<Register> {
               const SizedBox(height: 10),
               const Text("Register", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Color(0xFF4B331D))),
               const SizedBox(height: 30),
-              _inputField(
-                _nameController,
-                "Full Name",
-                Icons.person,
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Full Name",
+                  prefixIcon: Icon(Icons.person),
+                ),
                 validator: (val) {
                   final nameParts = val?.trim().split(' ').where((part) => part.isNotEmpty).toList() ?? [];
                   if (nameParts.length < 2) return 'Please enter both first and last name';
                   return null;
                 },
               ),
-              _inputField(_emailController, "Email", Icons.email, keyboardType: TextInputType.emailAddress),
-              _inputField(_phoneController, "Phone Number", Icons.phone, keyboardType: TextInputType.phone),
-              _inputField(_passController, "Password", Icons.lock, obscure: true),
-              _inputField(_confirmpassController, "Confirm Password", Icons.lock, obscure: true, validator: (val) {
-                if (val != _passController.text) return 'Passwords do not match';
-                return null;
-              }),
-              _inputField(_addressController, "Address", Icons.place, maxLines: 2),
+              SizedBox(height: 10,),
+              TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Email",
+                  prefixIcon: Icon(Icons.email),
+                ),
+                keyboardType: TextInputType.emailAddress,
+              ),
+              SizedBox(height: 10,),
+              TextFormField(
+                controller: _phoneController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Phone Number",
+                  prefixIcon: Icon(Icons.phone),
+                ),
+                keyboardType: TextInputType.phone,
+              ),
+              SizedBox(height: 10,),
+              TextFormField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Password",
+                  prefixIcon: Icon(Icons.lock),
+                ),
+                obscureText: true,
+              ),
+              SizedBox(height: 10,),
+              TextFormField(
+                controller: _confirmpasswordController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Confirm Password",
+                  prefixIcon: Icon(Icons.lock),
+                ),
+                obscureText: true,
+                validator: (val) {
+                  if (val != _passwordController.text) return 'Passwords do not match';
+                  return null;
+                },
+              ),
+              SizedBox(height: 10,),
+              TextFormField(
+                controller: _addressController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Address",
+                  prefixIcon: Icon(Icons.place),
+                ),
+                maxLines: 2,
+              ),
+              SizedBox(height: 10,),
               GestureDetector(
                 onTap: _pickDate,
                 child: AbsorbPointer(
-                  child: _inputField(_birthController, "Birth of Date", Icons.cake),
+                  child: TextFormField(
+                    controller: _birthController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Birth of Date",
+                      prefixIcon: Icon(Icons.cake),
+                    ),
+                  ),
                 ),
               ),
+
               const SizedBox(height: 10),
               Row(
                 children: [
@@ -236,26 +293,6 @@ class _RegisterState extends State<Register> {
           ),
         ),
       ]),
-    );
-  }
-
-  Widget _inputField(TextEditingController controller, String label, IconData icon,
-      {bool obscure = false, int maxLines = 1, TextInputType keyboardType = TextInputType.text, String? Function(String?)? validator}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: TextFormField(
-        controller: controller,
-        obscureText: obscure,
-        maxLines: maxLines,
-        keyboardType: keyboardType,
-        validator: validator ?? (val) => val == null || val.isEmpty ? 'Required' : null,
-        decoration: InputDecoration(
-          labelText: label,
-          labelStyle: const TextStyle(fontSize: 18, color: Colors.black),
-          prefixIcon: Icon(icon, color: Colors.brown),
-          border: const OutlineInputBorder(),
-        ),
-      ),
     );
   }
 

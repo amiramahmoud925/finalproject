@@ -14,7 +14,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Book> books = bookList;
   PageController _pageController = PageController();
-  TextEditingController _textController = TextEditingController();
   int currentpage = 0;
   String username = '';
 
